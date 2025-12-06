@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "NorthWind_Pawan_Kataria_Report"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3471e62c-e946-4bbb-bb11-840540dc51d4"
+  }
+}

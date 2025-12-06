@@ -1,0 +1,60 @@
+relationship 50f0d01c-0598-4f14-8f37-0b941400888c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Employees.BirthDate
+	toColumn: LocalDateTable_2776ad4d-3089-4142-b010-a410705f72e6.Date
+
+relationship 11fe987d-33f4-4b93-976c-36d5422ea5b1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Employees.HireDate
+	toColumn: LocalDateTable_ee620a97-77f3-472e-9374-e43c6dc394f4.Date
+
+relationship 8a7bab6d-e502-4d45-bd9f-541f587626c7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Orders.RequiredDate
+	toColumn: LocalDateTable_7971f089-61c5-48c9-a97d-d672fe97c93d.Date
+
+relationship AutoDetected_97d6f3e6-93b7-4f37-8b97-fe0649747061
+	fromColumn: Product.CategoryID
+	toColumn: Categories.CategoryID
+
+relationship AutoDetected_f108e74f-0ed5-4c8c-aecb-7a80671e9c1f
+	fromColumn: Orders.CustomerID
+	toColumn: Customers.CustomerID
+
+relationship AutoDetected_93bd5403-d8a2-4631-bd68-1c651d9cc494
+	fromColumn: Orders.EmployeeID
+	toColumn: Employees.EmployeeID
+
+relationship AutoDetected_991f384e-260a-4901-8af4-ae172ee185ee
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'Orders Details'.OrderID
+	toColumn: Orders.OrderID
+
+relationship AutoDetected_6f987909-3ab7-4559-9b33-80b4c1147cc4
+	crossFilteringBehavior: bothDirections
+	securityFilteringBehavior: bothDirections
+	fromColumn: 'Orders Details'.ProductID
+	toColumn: Product.ProductID
+
+relationship AutoDetected_caa63bbe-ca5c-4421-a02a-141f88691429
+	fromColumn: Product.SupplierID
+	toColumn: Suppliers.SupplierID
+
+relationship f7011358-17e7-b90a-ddb3-678448083684
+	fromColumn: Orders.ShipVia
+	toColumn: Shippers.ShipperID
+
+relationship 286128fe-786a-4462-930a-9281dd0d8937
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fin-Calendar.Date
+	toColumn: LocalDateTable_ae328d85-05a7-49c2-8ab2-dd053d43b0f9.Date
+
+relationship f0f0588d-d2a1-ad4c-4b67-de6b8105a8f2
+	fromColumn: Orders.OrderDate
+	toColumn: Fin-Calendar.Date
+
+relationship 5666f921-3e8e-41f6-27cf-b4dfba7d2990
+	isActive: false
+	fromColumn: Orders.ShippedDate
+	toColumn: Fin-Calendar.Date
+

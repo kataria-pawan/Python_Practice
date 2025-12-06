@@ -1,0 +1,197 @@
+table Employees
+	lineageTag: 4738ad64-e626-445d-a2a3-a671231019c6
+
+	column EmployeeID
+		dataType: int64
+		formatString: 0
+		lineageTag: b83955a9-bef9-4c9a-9376-0b38e5efb617
+		summarizeBy: none
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: 03e5cd94-4f90-43c3-ac9a-63d91c49daef
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: 6a99b388-6482-4f27-8cef-c262e46d24eb
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Title
+		dataType: string
+		lineageTag: 096dfc90-0f53-4b29-a6a0-90703205c376
+		summarizeBy: none
+		sourceColumn: Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column TitleOfCourtesy
+		dataType: string
+		lineageTag: a9ba880b-919f-474d-973e-dde0f1a177e8
+		summarizeBy: none
+		sourceColumn: TitleOfCourtesy
+
+		annotation SummarizationSetBy = Automatic
+
+	column BirthDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 204ded85-f393-4f9b-a084-9cafa5b209e9
+		summarizeBy: none
+		sourceColumn: BirthDate
+
+		variation Variation
+			isDefault
+			relationship: 50f0d01c-0598-4f14-8f37-0b941400888c
+			defaultHierarchy: LocalDateTable_2776ad4d-3089-4142-b010-a410705f72e6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column HireDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 62b57576-cd6d-4f08-b527-fec2234cc13a
+		summarizeBy: none
+		sourceColumn: HireDate
+
+		variation Variation
+			isDefault
+			relationship: 11fe987d-33f4-4b93-976c-36d5422ea5b1
+			defaultHierarchy: LocalDateTable_ee620a97-77f3-472e-9374-e43c6dc394f4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Address
+		dataType: string
+		lineageTag: 86a55cc9-e9e1-4c3a-9f18-3e7b9c5e9f33
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: cf832d0f-2f19-4057-ac59-5cffc608869a
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 0dd1989b-0fd6-478a-a95a-b1fd8f04afd4
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column PostalCode
+		dataType: string
+		lineageTag: 7e56c35a-fcec-4a72-a529-71c0280c5428
+		summarizeBy: none
+		sourceColumn: PostalCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: ef050403-cbac-4b41-bdae-4a4390df6a0d
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column HomePhone
+		dataType: string
+		lineageTag: 4fe9c6c0-9fcc-4981-a64e-22038feb6b38
+		summarizeBy: none
+		sourceColumn: HomePhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Extension
+		dataType: int64
+		formatString: 0
+		lineageTag: d606c0b9-dc9f-43e1-8122-8107adb0f5fc
+		summarizeBy: sum
+		sourceColumn: Extension
+
+		annotation SummarizationSetBy = Automatic
+
+	column Photo
+		dataType: string
+		lineageTag: 7a096ee3-fbeb-4813-8383-2d3c5f7b9fd4
+		summarizeBy: none
+		sourceColumn: Photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: 903d88d6-e55a-4381-a753-46c6258f94fd
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportsTo
+		dataType: int64
+		formatString: 0
+		lineageTag: d4dfe0fe-8fa9-4a72-8ac0-358102c1409e
+		summarizeBy: sum
+		sourceColumn: ReportsTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Seniority Order' = PATH(Employees[EmployeeID],Employees[ReportsTo])
+		lineageTag: 6597859d-6afa-4eda-9c76-d3bfc168e2ac
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level1 = LOOKUPVALUE(Employees[FirstName],Employees[EmployeeID],PATHITEM(Employees[Seniority Order],1, INTEGER))
+		lineageTag: 6ab1bfc4-555c-4038-8aec-d5e8d15bc3ba
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level2 = LOOKUPVALUE(Employees[FirstName],Employees[EmployeeID],PATHITEM(Employees[Seniority Order],2, INTEGER))
+		lineageTag: c18e9c3f-fedf-47ad-a245-e86a1a1dad15
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level3 = LOOKUPVALUE(Employees[FirstName],Employees[EmployeeID],PATHITEM(Employees[Seniority Order],3, INTEGER))
+		lineageTag: 7404d433-b4dc-429c-9220-d2b6e219e223
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Employees = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Pawan Kataria\Downloads\Northwind.xlsx"), null, true),
+				    Employees_Sheet = Source{[Item="Employees",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Employees_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"EmployeeID", Int64.Type}, {"LastName", type text}, {"FirstName", type text}, {"Title", type text}, {"TitleOfCourtesy", type text}, {"BirthDate", type date}, {"HireDate", type date}, {"Address", type text}, {"City", type text}, {"Region", type text}, {"PostalCode", type text}, {"Country", type text}, {"HomePhone", type text}, {"Extension", Int64.Type}, {"Photo", type text}, {"Notes", type text}, {"ReportsTo", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

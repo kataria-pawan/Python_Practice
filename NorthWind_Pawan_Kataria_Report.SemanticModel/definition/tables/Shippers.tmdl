@@ -1,0 +1,43 @@
+table Shippers
+	lineageTag: f51d4618-e121-4f8f-a2ed-04697c6b9ea8
+
+	column ShipperID
+		dataType: int64
+		formatString: 0
+		lineageTag: 4638587e-217d-456a-99ad-88d83ec75ffa
+		summarizeBy: none
+		sourceColumn: ShipperID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyName
+		dataType: string
+		lineageTag: 49ecca88-d453-424c-aedc-a7b6286ff469
+		summarizeBy: none
+		sourceColumn: CompanyName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		lineageTag: 909e4a3c-d909-49aa-a51b-3592f553af0c
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Shippers = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Pawan Kataria\Downloads\Northwind.xlsx"), null, true),
+				    Shippers_Sheet = Source{[Item="Shippers",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Shippers_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ShipperID", Int64.Type}, {"CompanyName", type text}, {"Phone", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

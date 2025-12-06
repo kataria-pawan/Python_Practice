@@ -1,0 +1,115 @@
+table Suppliers
+	lineageTag: 4969a6a1-d698-48fd-97e0-b2ae67230562
+
+	column SupplierID
+		dataType: int64
+		formatString: 0
+		lineageTag: 0c584605-2436-4f17-8b11-30b780402615
+		summarizeBy: none
+		sourceColumn: SupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyName
+		dataType: string
+		lineageTag: 59872336-93b0-47fa-8ad9-e8e52d410ca8
+		summarizeBy: none
+		sourceColumn: CompanyName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContactName
+		dataType: string
+		lineageTag: 510c5768-9fda-4fdf-85bc-5a5355e995c6
+		summarizeBy: none
+		sourceColumn: ContactName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContactTitle
+		dataType: string
+		lineageTag: fab10f0d-0a36-44a2-b266-72472c0bfd4c
+		summarizeBy: none
+		sourceColumn: ContactTitle
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: 59a97adc-be3a-48d7-b405-b88d7be2570b
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 7ec137a2-a695-476e-8f40-74bf5b875436
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: f8f4b6d7-cebb-4f2b-9baf-02032cb67fad
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column PostalCode
+		dataType: string
+		lineageTag: 78f706e6-98a2-41ff-aab6-cec02364ea29
+		summarizeBy: none
+		sourceColumn: PostalCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 8c7c4995-6bfb-440d-a2d7-30f4180f4bed
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		lineageTag: 07137758-660d-4ec0-bc39-aeb670d98020
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fax
+		dataType: string
+		lineageTag: 3b5e29a8-5b4d-4cff-b749-1fdebd224290
+		summarizeBy: none
+		sourceColumn: Fax
+
+		annotation SummarizationSetBy = Automatic
+
+	column HomePage
+		dataType: string
+		lineageTag: 350a03fa-e473-4d54-82e7-2124d9d8c644
+		summarizeBy: none
+		sourceColumn: HomePage
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Suppliers = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Pawan Kataria\Downloads\Northwind.xlsx"), null, true),
+				    Suppliers_Sheet = Source{[Item="Suppliers",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Suppliers_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SupplierID", Int64.Type}, {"CompanyName", type text}, {"ContactName", type text}, {"ContactTitle", type text}, {"Address", type text}, {"City", type text}, {"Region", type text}, {"PostalCode", type text}, {"Country", type text}, {"Phone", type text}, {"Fax", type text}, {"HomePage", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

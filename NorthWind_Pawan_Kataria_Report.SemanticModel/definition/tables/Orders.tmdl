@@ -1,0 +1,163 @@
+table Orders
+	lineageTag: bfe2e15c-e762-488f-a5e8-bb1372d297c1
+
+	column OrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: dae55d54-1c0c-41f1-80e5-4fc21c09b439
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		lineageTag: 46c252e3-2088-43ed-9e46-44b4097d7150
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeID
+		dataType: int64
+		formatString: 0
+		lineageTag: 068c065b-942d-4f67-9b0d-37b54905f146
+		summarizeBy: none
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 35f3a60e-094d-4583-a247-ff147fbf2e71
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column RequiredDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f2115a20-ab4e-42ea-8ba5-11200359df21
+		summarizeBy: none
+		sourceColumn: RequiredDate
+
+		variation Variation
+			isDefault
+			relationship: 8a7bab6d-e502-4d45-bd9f-541f587626c7
+			defaultHierarchy: LocalDateTable_7971f089-61c5-48c9-a97d-d672fe97c93d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ShippedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0c5caa17-c187-4d41-b5e1-fbcf0e3bbac8
+		summarizeBy: none
+		sourceColumn: ShippedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ShipVia
+		dataType: int64
+		formatString: 0
+		lineageTag: 41615538-3945-44cd-a2e5-b9271822ff8b
+		summarizeBy: none
+		sourceColumn: ShipVia
+
+		annotation SummarizationSetBy = Automatic
+
+	column Freight
+		dataType: double
+		lineageTag: c74b859a-ea67-4805-8ba2-25b50644f48f
+		summarizeBy: sum
+		sourceColumn: Freight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ShipName
+		dataType: string
+		lineageTag: 139ed9eb-5149-48e6-aa48-06b71e3a0cec
+		summarizeBy: none
+		sourceColumn: ShipName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShipAddress
+		dataType: string
+		lineageTag: c07b6522-f8b3-49b3-9a5f-00f2ad4da6b6
+		summarizeBy: none
+		sourceColumn: ShipAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShipCity
+		dataType: string
+		lineageTag: 340ee6bf-5c26-406e-8e95-bd92077da66e
+		summarizeBy: none
+		sourceColumn: ShipCity
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShipRegion
+		dataType: string
+		lineageTag: e8ad452d-31fb-4e5d-afef-a3d19e605abf
+		summarizeBy: none
+		sourceColumn: ShipRegion
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShipPostalCode
+		dataType: string
+		lineageTag: b7bfaa90-a122-4fa6-8431-0b310070e58a
+		summarizeBy: none
+		sourceColumn: ShipPostalCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShipCountry
+		dataType: string
+		lineageTag: 23301a46-dd57-4957-bde5-a4eb73ffbd04
+		summarizeBy: none
+		sourceColumn: ShipCountry
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivery Status' = ```
+			
+			IF (
+			    'Orders'[ShippedDate] <= 'Orders'[RequiredDate],
+			    "ON-Time Delivery",
+			    "Late Delivery"
+			)
+			
+			```
+		lineageTag: a69ffafc-1b1d-4b09-b48c-62ce71c3524c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Orders = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Pawan Kataria\Downloads\Northwind.xlsx"), null, true),
+				    Orders_Sheet = Source{[Item="Orders",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Orders_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"OrderID", Int64.Type}, {"CustomerID", type text}, {"EmployeeID", Int64.Type}, {"OrderDate", type date}, {"RequiredDate", type date}, {"ShippedDate", type date}, {"ShipVia", Int64.Type}, {"Freight", type number}, {"ShipName", type text}, {"ShipAddress", type text}, {"ShipCity", type text}, {"ShipRegion", type text}, {"ShipPostalCode", type text}, {"ShipCountry", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,86 @@
+table 'Orders Details'
+	lineageTag: 19c75cbd-93f8-4d5a-bfac-88c9f27cb4d8
+
+	column OrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: 61d14be5-6261-4d21-ae5a-1c9149c468a7
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f305c94-3409-412e-aa2e-e76a635aa49a
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitPrice
+		dataType: double
+		lineageTag: 23962d01-d158-4e63-9742-6537228987fc
+		summarizeBy: sum
+		sourceColumn: UnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: a588da39-7ab3-48a3-9e51-e38dae7b1529
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: double
+		lineageTag: e39ac761-002c-4cbf-a970-bc1d1d76f58a
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total Sales' = 'Orders Details'[UnitPrice]*'Orders Details'[Quantity]*(1-'Orders Details'[Discount]) + 'Orders Details'[Freight]
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 646f807e-c525-4b8e-9d94-f32532fe6dc3
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Freight
+		dataType: double
+		lineageTag: 4f6ea2b6-fe5e-4331-8b23-5bf5f3af583b
+		summarizeBy: sum
+		sourceColumn: Freight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Orders Details' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Pawan Kataria\Downloads\Northwind.xlsx"), null, true),
+				    #"Orders Details_Sheet" = Source{[Item="Orders Details",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Orders Details_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"OrderID", Int64.Type}, {"ProductID", Int64.Type}, {"UnitPrice", type number}, {"Quantity", Int64.Type}, {"Discount", type number}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"OrderID"}, Orders, {"OrderID"}, "Orders", JoinKind.LeftOuter),
+				    #"Expanded Orders" = Table.ExpandTableColumn(#"Merged Queries", "Orders", {"Freight"}, {"Freight"})
+				in
+				    #"Expanded Orders"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

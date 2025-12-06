@@ -1,0 +1,51 @@
+table Categories
+	lineageTag: 9d210ae6-3664-40cf-93b4-d63d53a25064
+
+	column CategoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 02354ebe-a346-4872-9d29-0640c8b30b22
+		summarizeBy: none
+		sourceColumn: CategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryName
+		dataType: string
+		lineageTag: 9dd8564f-51b2-4786-bc06-261e6e40eb83
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: 7b0bf4ca-aa16-4cdc-84b9-2c2631fba6ae
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Picture
+		dataType: string
+		lineageTag: 45071ff2-ac2b-4a92-bffc-120ce7d93123
+		summarizeBy: none
+		sourceColumn: Picture
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Categories = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Pawan Kataria\Downloads\Northwind.xlsx"), null, true),
+				    Categories_Sheet = Source{[Item="Categories",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Categories_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CategoryID", Int64.Type}, {"CategoryName", type text}, {"Description", type text}, {"Picture", type any}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
